@@ -1,0 +1,19 @@
+This Project is under construction...
+I want to implement a simple,multithread and cross platform(for now just linux and windows) http Server.
+The source code worked in a namespace called CHAOSWORK_NAMESPACE,shorten for cw.
+
+================================
+Target:
+1.Exception Safety
+2.Thread Safety
+3.Memery pool and thread pool
+================================
+patch details:
+
+
+--------------------------------
+2012-03-25 16:22:53
+1.handle the throw errors.
+2.Exception Safety Socket with basic actions:create,connect,bind,listen,accept and close.
+
+
