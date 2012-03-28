@@ -28,11 +28,11 @@ void HttpSocket::start(unsigned short port)
 
 }
 
-void HttpSocket::handleRequest(const Socket& req)
+void HttpSocket::handleRequest(Socket& req)
 {
 	char buf[MAXLINE],method[MAXLINE],uri[MAXLINE],version[MAXLINE];
 
-	SocketStream ss=getSocketStream();
+	SocketStream ss=req.getSocketStream();
 	ss.readn(buf,MAXLINE);
 	fputs(buf,stdout);
 }

@@ -15,7 +15,7 @@ class HttpSocket:public Socket{
 public:
 	HttpSocket();
 	void start(unsigned short port);
-	void handleRequest(const Socket& req);
+	void handleRequest(Socket& req);
 };
 
 #endif  /*HTTPSOCKET_H*/
