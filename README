@@ -1,7 +1,7 @@
 This Project is under construction...
 I want to implement a simple,multithread and cross platform(for now just linux and windows) http Server.
 The source code worked in a namespace called CHAOSWORK_NAMESPACE,shorten for cw.
-
+Special thanks for ptypes lib.I learned a lot from it to write a lib.
 ================================
 Target:
 1.Exception Safety

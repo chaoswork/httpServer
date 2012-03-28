@@ -1,60 +1,8 @@
-#ifndef  SOCKET_HPP
-#define  SOCKET_HPP
+#include    "Socket.h"
 
-#ifndef	PACKAGE_H
-#include    "package.h"
-#endif
-
-#ifndef ERROR_H
-#include    "error.hpp"
-#endif
-
-#include  <string>
-#include  <string.h>
-
-
-#ifdef linux
-#include  <sys/socket.h>
-#include  <netinet/in.h>
-#include  <arpa/inet.h>
-#include  <netdb.h>
-#include  <sys/types.h>
-#include  <unistd.h>
-typedef	int SOCKET;
-#else //WIN32
-#include  <winsock.h>
-#endif
 
 CW_BEGIN
 
-using std::string;
-/* Socket is class to handle socket,can't copy publicly.
- * With the action connect,close,and server action bind,
- * listen and accept.
- * I tried to make it Exception safety and thread safe and
- * cross linux and windows platform.*/
-class Socket{
-public:
-	//Socket(SOCKET sk=-1);
-	Socket(int af,int type,int protocol=0);
-	~Socket();
-	void connect(const string& ipAddr,unsigned short port);
-	/* bind,listen and accept should used for server*/
-	void bind(unsigned short port);
-	void listen(int backlog);
-	Socket accept(struct sockaddr_in* cliAddr=0);
-	void close();
-private:
-	void create(int af,int type,int protocol=0);
-	/* accept return a Socket Object,so we make the copy constructor
-	 * as private,and also disallow the operator= used public*/
-	Socket(const Socket& SK){m_socket=SK.m_socket;}
-	Socket& operator=(const Socket&);
-	explicit Socket(SOCKET sk=-1);
-
-	SOCKET m_socket;
-	bool socketClosed;
-};
 /* create an unconnected socket,or reference to sk */
 Socket::Socket(SOCKET sk)
 {
@@ -107,7 +55,7 @@ void Socket::bind(unsigned short port)
 	/* eliminates "Addr already in use" error from bind */
 	int optval=1;
 	if(setsockopt(m_socket,SOL_SOCKET,SO_REUSEADDR,
-				(const void*)&optval,sizeof(int))<0)
+				(optval_t)&optval,sizeof(int))<0)
 		throw Error("setsockopt error");
 	if(::bind(m_socket,(struct sockaddr*)&servAddr,sizeof(servAddr))<0)
 		throw Error("bind error,usually permission denied");
@@ -119,7 +67,8 @@ void Socket::listen(int backlog)
 		throw Error("socket listen error");
 }
 /* accept a connection request */
-Socket Socket::accept(struct sockaddr_in* cliAddr)
+//Socket Socket::accept(struct sockaddr_in* cliAddr)
+void Socket::accept(Socket& SK,struct sockaddr_in* cliAddr)
 {
 	SOCKET sk=-1;
 	if(cliAddr==0)//don't care the request socket address
@@ -132,18 +81,27 @@ Socket Socket::accept(struct sockaddr_in* cliAddr)
 	}
 	else
 	{
-		unsigned int socklen=sizeof(*cliAddr);
+		socklen_t socklen=sizeof(*cliAddr);
 		if((sk=::accept(m_socket,(struct sockaddr*)cliAddr,&socklen))<0)
 			throw Error("socket accept error");
 	}
-	return Socket(sk);
+	SK.m_socket=sk;
 
 }
 /* close socket */
 void Socket::close()
 {
+#ifdef WIN32
+	if(closesocket(m_socket)) throw Error("close socket error");
+	else socketClosed=true;
+#else
 	if(::close(m_socket)<0) throw Error("close socket error");
 	else socketClosed=true;
+#endif
+}
+
+SocketStream Socket::getSocketStream()
+{
+	return SocketStream(m_socket);
 }
 CW_END
-#endif  /*SOCKET_HPP*/

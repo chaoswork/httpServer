@@ -1,5 +1,5 @@
-#ifndef  ERROR_HPP
-#define  ERROR_HPP
+#ifndef  ERROR_H
+#define  ERROR_H
 
 #ifndef PACKAGE_H
 #include    "package.h"
@@ -28,20 +28,8 @@ private:
 	string msg;
 };
 
-Error::Error(string msg)
-{
-	this->msg=msg;
-}
-void Error::showError()
-{
-#ifdef CRIT_MSGBOX
-	MessageBox(0,msg,"Internal error",MB_OK);
-#else
-	fprintf(stderr,"\nInternal error: %s\n",msg.c_str());
-#endif
-}
 
 CW_END
 
 
-#endif  /*ERROR_HPP*/
+#endif  /*ERROR_H*/
