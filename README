@@ -13,7 +13,7 @@ patch details:
 -------------------------------
 2012-03-29 00:51:52
 1.add HttpSocket
-2.Server read has a bug
+2.Server read has a bug//fixed
 3.using fork,should be thread.
 --------------------------------
 2012-03-25 16:22:53
