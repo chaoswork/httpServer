@@ -11,6 +11,13 @@ Target:
 patch details:
 
 -------------------------------
+2012-03-30 01:53:02
+1.update the SocketStream class,reference to cs:app Rio_I/O
+2.there is still a close socket bug when use fork,for now just
+always close the socket in the destructor.
+3.Do implement a simple static web server on linux:)
+
+-------------------------------
 2012-03-29 00:51:52
 1.add HttpSocket
 2.Server read has a bug//fixed

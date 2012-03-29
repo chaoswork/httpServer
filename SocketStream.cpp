@@ -55,7 +55,57 @@ int SocketStream::writen(char* usrbuf,int n)
 #endif
 	return n;
 }
+int SocketStream::readb(char* usrbuf,int n)
+{
+	if(handle<0) return -1;
 
+	int cnt;
+	while(uncnt<=0)// refill if buf is empty
+	{
+#ifdef WIN32
+	unsigned long nwrittrn;
+	if(!WriteFile(HANDLE(handle),ssbuf,sizeof(ssbuf),&nwritten,0))
+		return -1;
+	uncnt=(int)nwritten;//this maybe a bug!
+#else
+		uncnt=::read(handle,ssbuf,sizeof(ssbuf));
+#endif
+		if(uncnt<0)
+		{
+			if(errno!=EINTR) return -1;
+		}
+		else if(uncnt==0) //EOF
+			return 0;
+		else
+			ssbufp=ssbuf;
+	}
+	cnt=uncnt<n?uncnt:n;
+	memcpy(usrbuf,ssbufp,cnt);
+	ssbufp+=cnt;
+	uncnt-=cnt;
+	return cnt;
+
+}
+int SocketStream::readlineb(char* usrbuf,int maxlen)
+{
+	int n,rc;
+	char c,*bufp=usrbuf;
+	for(n=1;n<maxlen;++n)
+	{
+		if((rc=readb(&c,1))==1){
+			*bufp++=c;
+			if(c=='\n') break;
+		}
+		else if(rc==0)
+		{
+			if(n==1) return 0;//EOF,no data read
+			else break;//EOF,some data was read
+		}
+		else return -1;
+	}
+	*bufp=0;
+	return n;
+}
 CW_END
 
 

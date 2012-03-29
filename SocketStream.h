@@ -2,7 +2,6 @@
 #define  SOCKETSTREAM_H
 
 #include    "package.h"
-#include    "error.h"
 #ifdef WIN32
 #	include <windows.h>
 #else
@@ -10,25 +9,32 @@
 #	include	<errno.h>
 #endif
 
+#include    "error.h"
 #include  <string>
+#include  <string.h>
 CW_BEGIN
 
-
+const int SSMAXLEN=8196;
 class SocketStream{
 public:
-	SocketStream(int sk):handle(sk){}
+	SocketStream(int sk):handle(sk)
+	{
+		uncnt=0;
+		ssbufp=ssbuf;
+	}
 	~SocketStream(){}
 
 	/* read and write without buffer */
 	int readn(char* usrbuf,int n);
 	int writen(char* usrbuf,int n);
-	/* read and write with buffer */
-	//int breadn
-	//int bwriten
+	/* read with buffer */
+	int readb(char* usrbuf,int n);
+	int readlineb(char* usrbuf,int maxlen);
 private:
 	int handle;
-	int uncnt;
-	char buf[8196];
+	int uncnt;//unread bytes
+	char* ssbufp;
+	char ssbuf[SSMAXLEN];
 };
 
 CW_END

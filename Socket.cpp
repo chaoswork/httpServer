@@ -91,11 +91,12 @@ void Socket::accept(Socket& SK,struct sockaddr_in* cliAddr)
 /* close socket */
 void Socket::close()
 {
+	//if(socketClosed) return;
 #ifdef WIN32
-	if(closesocket(m_socket)) throw Error("close socket error");
+	if(closesocket(m_socket));// throw Error("close socket error");
 	else socketClosed=true;
 #else
-	if(::close(m_socket)<0) throw Error("close socket error");
+	if(::close(m_socket)<0); //throw Error("close socket error");
 	else socketClosed=true;
 #endif
 }

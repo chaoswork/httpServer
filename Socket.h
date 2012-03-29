@@ -45,7 +45,7 @@ class Socket{
 public:
 	explicit Socket(SOCKET sk=-1);
 	Socket(int af,int type,int protocol=0);
-	~Socket();
+	virtual	~Socket();
 	void connect(const string& ipAddr,unsigned short port);
 	/* bind,listen and accept should used for server*/
 	void bind(unsigned short port);
@@ -56,13 +56,13 @@ public:
 
 	/* Socket i/o stream */
 	SocketStream getSocketStream();
-private:
+protected:
 	void create(int af,int type,int protocol=0);
 	/* accept return a Socket Object,so we make the copy constructor
 	 * as private,and also disallow the operator= used public*/
 	Socket(const Socket& SK){m_socket=SK.m_socket;}
 	Socket& operator=(const Socket&);
-
+private:
 	SOCKET m_socket;
 	bool socketClosed;
 };
