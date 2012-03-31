@@ -10,6 +10,13 @@ Target:
 ================================
 patch details:
 
+
+-------------------------------
+2012-03-31 20:23:15
+1.passed test in windows,so now it was a really cross platform:)
+2.still no thread
+3.Only send a string "Hello world!Just a Web Server test:)"
+4.This version may called 0.1
 -------------------------------
 2012-03-30 01:53:02
 1.update the SocketStream class,reference to cs:app Rio_I/O
