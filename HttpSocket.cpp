@@ -29,7 +29,14 @@ void HttpSocket::start(unsigned short port)
 		cli.close();
 	}
 #else
-	throw Error("Win32 HttpSocket start under construction...");
+	//throw Error("Win32 HttpSocket start under construction...");
+	Socket cli;
+	for(;;)
+	{
+		accept(cli);
+		handleRequest(cli);
+		cli.close();
+	}
 #endif
 
 }

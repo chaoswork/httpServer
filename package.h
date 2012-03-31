@@ -17,6 +17,8 @@
 #	define USING_CW
 #endif 	/* CHSOAWORK_NAMESPACE  */
 
+
+
 CW_BEGIN
 class Uncopyable 
 {
@@ -27,6 +29,7 @@ public:
 	Uncopyable() {}
 	~Uncopyable() {}
 };
+
 CW_END
 
 

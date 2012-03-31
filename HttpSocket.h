@@ -5,7 +5,7 @@
 #include    "error.h"
 USING_CW
 
-const int MAXLINE=8196;
+const int MAXLINE=512;
 
 /* HttpSocket handle the Http web,
  * maybe there should be a TcpSocket between

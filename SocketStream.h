@@ -14,13 +14,14 @@
 #include  <string.h>
 CW_BEGIN
 
-const int SSMAXLEN=8196;
+const int SSMAXLEN=512;
 class SocketStream{
 public:
 	SocketStream(int sk):handle(sk)
 	{
 		uncnt=0;
 		ssbufp=ssbuf;
+		memset(ssbuf,0,sizeof(ssbuf));
 	}
 	~SocketStream(){}
 

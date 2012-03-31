@@ -3,6 +3,36 @@
 
 CW_BEGIN
 
+// windows socket init
+
+#ifdef WIN32
+static class sock_init{
+public:
+	sock_init();
+	~sock_init();
+}_init;
+
+sock_init::sock_init()
+{
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	int err;
+
+	wVersionRequested = MAKEWORD(2,0);
+
+	err=WSAStartup(wVersionRequested,&wsaData);
+	
+	if(err) throw Error("Winsock init error");
+
+}
+
+sock_init::~sock_init()
+{
+	WSACleanup();
+}
+#endif
+
+
 /* create an unconnected socket,or reference to sk */
 Socket::Socket(SOCKET sk)
 {
@@ -75,7 +105,7 @@ void Socket::accept(Socket& SK,struct sockaddr_in* cliAddr)
 	{
 		struct sockaddr_in cliaddr;
 		memset(&cliaddr,0,sizeof(cliaddr));
-		unsigned int socklen=sizeof(cliaddr);
+		socklen_t socklen=sizeof(cliaddr);
 		if((sk=::accept(m_socket,(struct sockaddr*)&cliaddr,&socklen))<0)
 			throw Error("socket accept error");
 	}

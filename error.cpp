@@ -10,7 +10,7 @@ Error::Error(string msg)
 void Error::showError()
 {
 #ifdef CRIT_MSGBOX
-	MessageBox(0,msg,"Internal error",MB_OK);
+	MessageBox(0,msg.c_str(),"Internal error",MB_OK);
 #else
 	fprintf(stderr,"\nInternal error: %s\n",msg.c_str());
 #endif

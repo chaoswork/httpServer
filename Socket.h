@@ -5,7 +5,7 @@
 #include    "package.h"
 #endif
 
-#include    "SocketStream.h"
+
 #include  <string>
 #include  <string.h>
 
@@ -20,20 +20,25 @@
 typedef	int SOCKET;
 typedef void* optval_t;
 #else //WIN32
-#include  <winsock.h>
+#include  <winsock2.h>
 #include  <Ws2tcpip.h>
-typedef unsigned int socklen_t;
-typedef char* optval_t;
+#pragma comment(lib,"WS2_32.lib")
+//typedef unsigned int socklen_t;
+typedef const char* optval_t;
 #endif
 
 
 #ifndef ERROR_H
 #include    "error.h"
 #endif
-
+#include    "SocketStream.h"
 
 
 CW_BEGIN
+
+
+
+
 
 using std::string;
 /* Socket is class to handle socket,can't copy publicly.
@@ -63,7 +68,8 @@ protected:
 	Socket(const Socket& SK){m_socket=SK.m_socket;}
 	Socket& operator=(const Socket&);
 private:
-	SOCKET m_socket;
+	//SOCKET m_socket;
+	int m_socket;
 	bool socketClosed;
 };
 CW_END
